@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>ass3</title>
+    <style>
+        canvas {
+            width: 550px;
+            height: 550px;
+        }
+    </style>
+    <script src="babylon.math.js"></script>
+    <script src="SoftEngine.js"></script>
+    <script src="main.js"></script>
+</head>
+<body>
+    <canvas id="frontBuffer" width="550" height="550" style="background-color: black;"></canvas>
+    <br/>
+    Current FPS: <span id="FPS"></span>
+    <br />
+    Average FPS: <span id="AvgFPS"></span>
+    <br/><br/>
+    This project is implemented using the javascript "SoftEngine" developed using <a href="http://blogs.msdn.com/b/davrous/archive/2013/06/13/tutorial-series-learning-how-to-write-a-3d-soft-engine-from-scratch-in-c-typescript-or-javascript.aspx">this tutorial</a> and extended to include the functionality outlined below. The "Soft" in the "Soft Engine" refers to the fact that all graphical computation is being done programmatically and processed solely by the processor and NOT the shaders available in a machine's GPU. All math done to accomplish the extended functionality is done via the data structures housing the vertices and faces. <br/>
+    <h3>Key Commands:</h3><br/>
+    'P' to toggle Phone Shading algorithm: Per-pixel color determination based on interpolation of each triangle's vertex normals. This is accomplished by <br/>
+    1) Computing vertex normals based on surrounding face normals <br/>
+    2) Interpolating normals between connected vertices <br/>
+    3) Interpolating these values accross the face of the polygon during scan line processing <br/>
+    <br/>
+    'G' to toggle Gouraud shading: Per-vertex color determination based on vertex normal intensity. This is accomplished by<br/>
+    1) Computing each vertex normal of polygon<br/>
+    2) Computing intensity of vertex color via surrounding face normals<br/>
+    3) bi-linearly interpolate across polygon using solely vertex intensities <br/>
+    <br/>
+    'F' to toggle flat shading: The most simple of the three, based solely on the angle between the polygon's surface normal and the light source <br/>
+    <br/>
+    '+' (NUMPAD +) to increase Catmull-Clark subdivision by 1 iteration/step <br/>
+    The scheme used for implemented this algorithm is shown below. Each vertex added during an iteration is computed accordingly.<br/>
+    Due to the limitations of vertex and face storage, careful consideration had to be made in order to prevent data inaccuracies in modifying vertex and face connections and orientation. <br/>
+    This implementation uses a "half-edge mesh" (doubly linked list) to navigate from one vertex to another and back again. This makes the load time of the overall mesh MUCH shorter than something utilizing a more "brute-force" method.<br/> 
+    <img src="../resources/img/Catmull-Clark.png" alt="Model View Control" height="192" width="300">
+</body>
+</html>

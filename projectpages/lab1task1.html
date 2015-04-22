@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>XML to HTML</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <h3>Client to retrieve XML via HTTP request and transform it into HTML to be rendered</h3>
+            <br/>
+            <p>
+            	The specifications to this system are as follows
+            	<ol>
+            		<li>Take command-line arguments for &lt;server IP&gt;, &lt;port&gt;, &lt;name of file to be retrieved&gt;, </li>
+            		<li>Handle errors where the XML file is no well-formed or invalid</li>
+            		<li>Transform the XML content to HTML</li>
+            		<li>Write the newly formed HTML to stdout</li>
+            	</ol>
+            	This particular implementation was done in Java using a raw socket connection based on the passed arguments and using using XSLT to manipulate the XML and retrieve HTML based on my template file 
+            	<br/>An example of how the available XML files will be formed:<br/>
+            	<code><pre>
+&LT;KnowledgeDocument&GT;
+	&LT;KnowledgeAsset primarySubjectID="subject1"&GT;
+	 	&LT;title&GT;XML Asset 1&LT;/title&GT;
+	  	&LT;description&GT;This is a sample KnowledgeAsset defined in the XML&LT;/description&GT;
+	   	&LT;KnowledgeRating Rater="Joe" Rating="5" EntryDate="12-Dec-98"&GT;
+	      	&LT;description&GT;Joe made a rating&LT;/description&GT;
+	  	&LT;/KnowledgeRating&GT;
+	  	&LT;KnowledgeRating Rater="Sue" Rating="9" EntryDate="09-Mar-99"&GT;
+	       	&LT;description&GT;Sue made a rating&LT;/description&GT;
+	  	&LT;/KnowledgeRating&GT;
+	&LT;/KnowledgeAsset&GT;
+	&LT;KnowledgeSubject subjectID="subject1"&GT;
+		&LT;title&GT;XML Subject 1&LT;/title&GT;
+	    &LT;description&GT;This is a sample KnowledgeSubject defined in the XML&LT;/description&GT;
+	&LT;/KnowledgeSubject&GT;
+&LT;/KnowledgeDocument&GT;
+				</pre></code>
+            </p>
+            <br/>
+            <h3>Sample Execution</h3>
+            <img src="resources/img/l1t10.PNG" alt="Client" height="187" width="648">
+            <br/>
+            <p>
+            	The project builds using ant (targets task shown with example of how to execute)
+            </p>
+            <img src="resources/img/l1t11.PNG" alt="Web Service" height="986" width="678">
+            <br/>
+            <p>
+            	Example execution of arguments that point to the above xml example with HTML printed to stdout
+                <br/>
+                The source code for all components of this project can be viewed <a href="https://github.com/vanceanderson41/ser421lab1task1">here.</a>
+            </p>
+        </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Web Service</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <h3>Music Library With Web Services and Socket Server Connections</h3>
+            <br/>
+            <p>
+                As part of a distributed computing course, I completed a class project aimed at demonstrating use of web-services to maintain a stateful central music library using tomcat and jax-ws. It uses a threaded socket-based upload/download server written in java to store the actual corresponding music files. One of the two clients that communicate with the remote object and the socket server is written in java and the other in objective-c. The 'distributed' aspect held pretty true for the project, as it utilizes remote method invocation and client-server interaction, but it does require tomcat to be running to parse the wsdl, build, and run.
+            </p>
+            <br/>
+            <img src="resources/img/ws0.JPG" alt="Web Service" height="594" width="694">
+            <br/>
+            <p>
+                Populating the song information fields and clicking 'Add' opens a dialog to choose a corresponding .wav file. Choosing one and submitting both sends a message to the web service to store a music description object in its hashtable and also opens a thread in the socket server to upload the .wav file to it.
+            </p>
+            <img src="resources/img/ws1.JPG" alt="Web Service" height="594" width="694">
+            <br/>
+            <p>
+                The project is set up such that only one song file is maintained on the client at a time. This means that selecting a song and  pressing play will first open a socket connection to the server and download it overwriting any previous song played, then play it.
+                <br/>
+                The source code for all components of this project can be viewed <a href="https://github.com/vanceanderson41/distributedProject">here.</a>
+            </p>
+        </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

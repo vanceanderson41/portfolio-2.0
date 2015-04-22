@@ -1,0 +1,290 @@
+<html>
+	<head>
+		<title>Assign6</title>
+		<style>canvas { width: 100%; height: 100% }</style>
+	</head>
+	<body>
+		<form>
+			<input type="text" id = "debug" size="35">
+		</form>
+		<script src="../js/three.js"></script>
+		<script src="../js/OrbitControls.js"></script>
+		<script src="../js/ImageUtils.js"></script>
+		<script src="../js/ShaderLib.js"></script>
+		<script src="../js/dat.gui.min.js"></script>
+		<script>
+			var scene, camera, renderer, camera, control, clock, gui, dirLight, 
+			rightArm, head, body, leftLeg, rightLeg, hat;
+			//for movement
+			var angle = 180;
+			var idleCounter = 0;
+			var leftLegMv = 0.1;
+			var rightLegMv = -0.1;
+
+			var idle = false;
+			var walk = false;
+			var run = false;
+			var bend = false;
+			
+			init();
+			setupGui();
+
+			
+
+			var color = 0x606060;
+			var size = 4;
+			drawParts(color, size);
+
+			render();
+			function drawParts(col, scale)
+			{
+				// body
+				var bodyMaterial = new THREE.MeshLambertMaterial({color: col });
+				var bodyGeometry = new THREE.CylinderGeometry(scale, scale, scale*3, 32, 32);
+				body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+				body.position.y = scale*4.5;
+				scene.add(body);
+
+				// head
+				var headMaterial = new THREE.MeshLambertMaterial({color: col });
+				var headGeometry = new THREE.SphereGeometry(scale, 32, 32);
+				head = new THREE.Mesh(headGeometry, headMaterial);
+				head.position.y = scale*2.5;
+				body.add(head);
+
+				// eyes
+				var leftEyeMaterial = new THREE.MeshLambertMaterial({color: 0xffff00 });
+				var rightEyeMaterial = new THREE.MeshLambertMaterial({color: 0xffff00 });
+				var leftEyeGeometry = new THREE.SphereGeometry(scale/12, 32, 32);
+				var rightEyeGeometry = new THREE.SphereGeometry(scale/12, 32, 32);
+				var leftEye = new THREE.Mesh(leftEyeGeometry, leftEyeMaterial);
+				var rightEye = new THREE.Mesh(rightEyeGeometry, rightEyeMaterial);
+
+				leftEye.position.z = scale;
+				rightEye.position.z = scale;
+				leftEye.position.x = -scale/4;
+				rightEye.position.x = scale/4;
+				head.add(leftEye);
+				head.add(rightEye);
+
+				// hat
+				var hatMaterial = new THREE.MeshLambertMaterial({color: col });
+				var hatGeometry = new THREE.CylinderGeometry(0, scale, scale, 32, 32);
+				hat = new THREE.Mesh(hatGeometry, hatMaterial);
+				hat.position.y = scale;
+				head.add(hat);
+
+				//left leg
+				var leftLegMaterial = new THREE.MeshLambertMaterial({color: col });
+				var leftLegGeometry = new THREE.CylinderGeometry(scale/4, scale/4, scale*3, 32, 32);
+				leftLeg = new THREE.Mesh(leftLegGeometry, leftLegMaterial);
+				leftLeg.position.y = -scale*3;
+				leftLeg.position.x = -scale/2;
+				body.add(leftLeg);
+
+				//right leg
+				var rightLegMaterial = new THREE.MeshLambertMaterial({color: col });
+				var rightLegGeometry = new THREE.CylinderGeometry(scale/4, scale/4, scale*3, 32, 32);
+				rightLeg = new THREE.Mesh(rightLegGeometry, rightLegMaterial);
+				rightLeg.position.y = -scale*3;
+				rightLeg.position.x = scale/2;
+				body.add(rightLeg);
+
+				// left arm
+				var leftArmMaterial = new THREE.MeshLambertMaterial({color: col });
+				var leftArmGeometry = new THREE.CylinderGeometry(scale/8, scale/8, scale*3, 32, 32);
+				leftArmGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, -scale*1.5, 0));
+				var leftArm = new THREE.Mesh(leftArmGeometry, leftArmMaterial);
+				leftArm.position.x = -scale;
+				leftArm.position.y = scale;
+				leftArm.rotateOnAxis(new THREE.Vector3(0,0,1), -Math.PI/12);
+				body.add(leftArm);
+
+				// right arm
+				var rightArmMaterial = new THREE.MeshLambertMaterial({color: col });
+				var rightArmGeometry = new THREE.CylinderGeometry(scale/8, scale/8, scale*3, 32, 32);
+				rightArmGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, scale*1.5, 0));
+				rightArm = new THREE.Mesh(rightArmGeometry, rightArmMaterial);
+				rightArm.position.x = scale;
+				rightArm.position.y = scale;
+				rightArm.rotateOnAxis(new THREE.Vector3(0,0,1), -Math.PI*11/12);
+				body.add(rightArm);
+				
+				// make them all cast shadows
+				body.traverse( function ( object ) 
+				{
+					if ( object instanceof THREE.Mesh ) 
+					{
+						object.castShadow = true;
+						object.receiveShadow = true;
+					}
+				} );
+
+				
+			}
+
+			function init()
+			{
+				// Setup of scene, camera, lighting
+				scene = new THREE.Scene();
+				camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+				renderer = new THREE.WebGLRenderer();
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				document.body.appendChild(renderer.domElement);
+				renderer.shadowMapEnabled = true;
+				
+				camera.position.z = 100;
+				camera.position.y = 2;
+				scene.add(camera);
+
+				control = new THREE.OrbitControls(camera, renderer.domElement);
+				clock = new THREE.Clock();
+
+				dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+				dirLight.position.set(0,1,0);
+				scene.add(dirLight);
+
+				var spotLight = new THREE.SpotLight(0xffffff);
+				spotLight.position.set( 100, 100, 100 );
+				spotLight.castShadow = true;
+
+				spotLight.shadowMapWidth = 1024;
+				spotLight.shadowMapHeight = 1024;
+
+				scene.add(spotLight);
+
+
+				//DRAW PLANE
+				var geometry = new THREE.PlaneGeometry( 500, 500 );
+				var mat = new THREE.Matrix4();
+				mat.makeRotationX(Math.PI/2);
+
+				geometry.applyMatrix(mat);
+				
+
+				var material = new THREE.MeshPhongMaterial({color: 0x8b4513, side: THREE.DoubleSide});
+				var plane = new THREE.Mesh(geometry, material);
+				plane.receiveShadow = true;
+				scene.add(plane);	
+				// END DRAW PLANE
+			}	
+			function render()
+			{
+				control.update();
+				requestAnimationFrame(render);
+				renderer.render(scene, camera);
+
+				dirLight.position = camera.position;
+				
+
+				
+				idle = effectController.newIdle;
+				if(idle)
+				{
+					idleCounter++;
+					//debug(idleCounter);
+					if(idleCounter >= 150)
+					{
+						idleCounter = 0;
+						angle *= -1;
+					}
+					idling();
+				}
+				
+				walk = effectController.newWalk;
+				if(walk)
+				{	
+					if(leftLeg.position.z >= size/2)
+					{
+						leftLegMv *= -1;
+						rightLegMv *= -1;
+					}
+					if(leftLeg.position.z <= -size/2)
+					{
+						leftLegMv *= -1;
+						rightLegMv *= -1;
+					}
+					walking();
+				}
+
+				run = effectController.newRun;
+				if(run)
+				{	
+					if(leftLeg.position.z >= size/2)
+					{
+						leftLegMv *= -1;
+						rightLegMv *= -1;
+					}
+					if(leftLeg.position.z <= -size/2)
+					{
+						leftLegMv *= -1;
+						rightLegMv *= -1;
+					}
+					running();
+				}
+
+				bend = effectController.newBend;
+				if(bend)
+				{
+					debug("bending");
+					bending();
+				}
+			}
+			
+
+			function debug(msg)
+			{
+				document.getElementById('debug').value=msg;
+			}
+
+			function idling()
+			{
+				rightArm.rotation.z += Math.PI / angle;
+				head.rotation.x -= Math.PI / angle / 2;
+			}
+
+			function walking()
+			{
+				body.position.z += .1;
+				leftLeg.position.z += leftLegMv;
+				rightLeg.position.z += rightLegMv;
+			}
+
+			function running()
+			{
+				body.position.z += .5;
+				leftLeg.position.z += leftLegMv*5;
+				rightLeg.position.z += rightLegMv*5;
+			}
+
+			function bending()
+			{
+				body.rotation.x += .1;
+				leftLeg.rotation.x += -0.1;
+				rightLeg.rotation.x += -0.1;
+				hat.position.y += 0.1;
+				//leftLeg.position.z += leftLegMv*5;
+				//rightLeg.position.z += rightLegMv*5;
+			}
+
+			function setupGui() 
+			{
+				effectController = {
+
+					newIdle: idle,
+					newWalk: walk,
+					newRun: run,
+					newBend: bend
+				};
+
+				var gui = new dat.GUI();
+				gui.add(effectController, "newIdle").name("Idle");
+				gui.add( effectController, "newWalk" ).name("Walk");
+				gui.add( effectController, "newRun" ).name("Run");
+				gui.add( effectController, "newBend" ).name("Bend");
+			}
+		</script>	
+  </body>
+</html>
+

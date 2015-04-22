@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>XML to HTML</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <h3>Multithreaded Web Caching Proxy Server</h3>
+            <br/>
+            <p>
+                The specifications of this system are as follows
+                <ol>
+                    <li>Accept incoming requests for an XML file, and return the rendered HTML version from a cache or by forward the request to a target server</li>
+                    <li>Takes the following command-line arguments: 
+                    <ol>
+                        <li>Target server URL</li>
+                        <li>Port of the remote server serving XML that is not cached here</li>
+                        <li>Port on which this server will listen to requests</li>
+                        <li>Cache size in total number of files</li>
+                    </ol>
+                </ol>
+                Incoming requests to the server will be over HTTP and be a specific URL. For each incoming request:
+                <ol>
+                    <li>Check to see if an HTML (already converted from the source XML) version of the file is in your cache. If so, return that file’s contents.</li>
+                    <li>If not, forward the request to the target server</li>
+                    <li>When you get the response back (and it is valid), place the rendered HTML file in cache and then write the HTML contents back to the client.</li>
+                    <li>Each incoming request serviced in an individual thread</li>
+                </ol>
+                This implementation utilizes a raw socket connection to begin remote server transaction and all pertinent error codes are available.
+            </p>
+            <img src="resources/img/l1t20.PNG" alt="Server" height="599" width="1161">
+            <p>
+                Successful request via browser
+            </p>
+            <img src="resources/img/l1t21.PNG" alt="Server" height="307" width="972">
+            <p>
+                Unsuccessful request via browser
+            </p>
+            <img src="resources/img/l1t22.PNG" alt="Server" height="296" width="531">
+            <p>
+                Cached request
+            </p>
+
+
+            
+
+        </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

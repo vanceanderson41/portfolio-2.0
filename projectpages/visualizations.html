@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Visualizations</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="jumbotron">
+                <p>
+                    After a semester working with the PLPTool, I was offered the opportunity to join an REU effort funded by the National Science Foundation under the guidance of Dr.Sohum Sohoni for ASU. One of our focuses was to write modules to sit on top of the PLPTool IDE written in java to visualize inner workings of the simulated processor.
+                    <br/>
+                    <a href="https://github.com/vanceanderson41/moduleProjects">Github Reopistory Cointaing All 3 Module Projects</a>
+                </p>
+            </div>
+            <p>
+                Each of the modules generally follows this MVC schema:
+            </p>
+            <img src="resources/img/mvc.jpg" alt="Model View Control" height="502" width="708">
+            <br/>
+            <h3>Pipeline</h3>
+            <img src="resources/img/pipeline0.jpeg" alt="Pipeline" height="235" width="320">
+            <img src="resources/img/pipeline1.jpeg" alt="Pipeline" height="235" width="320">
+            <img src="resources/img/pipeline2.jpeg" alt="Pipeline" height="235" width="320">
+            <p>
+                The user of this visualization first drags instructions from the left and places them in the queue. Clicking step will pass the instructions through the pipeline one stage at a time: fetch, decode, execute, memory access, write back. This works by actually writing a program in the background that includes the instructions the user chose and then reading real-time states of each stage of the pipeline. The pipeline visuals lack pieces of the sandwiches in each successive stage, representing that the piece of the instruction used by the previous stage is no longer used. The symbols used to represent the instructions and the sandwich being "eaten" employ a sense of conceptual blending aimed at tying the pipeline to a more identifiable every day object/occurrence. Most of the GUI is made of swing JComponents and each instruction is an object of a custom class for instruction GUI components written by Damon Cost.
+            </p>
+            <br/>
+            <h3>Instruction Disassembled</h3>
+            <img src="resources/img/dis0.jpeg" alt="Disassembly" height="422" width="866">
+            <img src="resources/img/dis1.jpeg" alt="Disassembly" height="422" width="866">
+            <p>
+                This module takes the stored instructions of the program and displays the next 5. Clicking the step button brings a display into view that has the 32 bit instruction broken down into:<br/><br/>
+
+                R-Type: opCode | rs | rt | rd | shamt | func<br/>
+                J-Type:  opCode | target<br/>
+                I-Type:   opCode | rs | rt | imm<br/><br/>
+
+                The blocks represent the actual information stored in the instruction including the source and destination registers, opcodes, immediate fields, etc. Like the pipeline module, the coloring and Y-frame are aimed at conceptual blending of computing concepts with more identifiable everyday concepts.
+            </p>
+        </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

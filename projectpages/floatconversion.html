@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>IEEE-754</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <h3>IEEE-754 Floating Point Conversion - Assembly</h3>
+            <p>
+                I was part of a team that designed and implemented the algorithm to successfully convert base 10 floats to single precision binary representation. Any floating point decimal number representable by single precision IEEE format can be converted. The input is entered into a UART and received as ASCII and then converted to the 32-bit format defined by the standard. This effort was accomplished using PLPTool, a simulation of a RISC.
+                <br/>
+                Aside from the conversion, I wrote a program that implements all IEEE-754 operations except for division and raises appropriate exception flags due to invalid operations, overflow, underflow, and inexact rounding.
+                <br/>
+                <a href="https://github.com/vanceanderson41/plpexamples">Github for both programs</a>
+                <br/>
+                <a href="https://plp.asu.edu">PLP's home</a>
+                <br/>
+                <a href="http://en.wikipedia.org/wiki/IEEE_754-1985">IEEE-754</a>
+                <br/>
+                This is a sample run of the conversion program. It took just over 5000 cycles to convert this number. The number of cycles is particularly high when entering numbers nearing 0.
+            </p>
+            <img src="resources/img/convert0.jpeg" alt="Conversion" height="584" width="768">
+            <br/>
+            <p>
+                In order to run the project, the PLPTool IDE must be installed, but the assembly to actually convert can be viewed in theAssembly.txt in the github repo.
+            </p>
+        </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

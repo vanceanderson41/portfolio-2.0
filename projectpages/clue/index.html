@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<script src="functions.js" defer></script>
+<body>
+	<h2>Full Deck of Cards</h2>
+	<p id="suspects"></p>
+	<p id="weapons"></p>
+	<p id="rooms"></p>
+	<form>
+		Enter Name: 
+		<input type="text" autofocus="true" id="name"/>
+		<input type="button" value="Submit" onclick="nameEntered();disableSubmit(this); showCards();displayTurn()" id="submit"/>
+	</form>
+	<p id="greeting"></p>
+	<p id="myCards"></p>
+	<p id="turnSpace"></p>
+
+	<!-- History section -->
+	<input type="button" value="Show History" onclick="showHideHistory()" id="historyToggle"/>
+	<p id="historySpace"></p>
+
+	<!-- Record section -->
+	<input type="button" value="Show Record" onclick="showHideRecord()" id="recordToggle"/>
+	<p id="recordSpace"></p>
+</body>
+</html>
